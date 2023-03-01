@@ -17,9 +17,9 @@ export class tradeGood {
   };
 }
 
-export function filterGoods(goodsArray, str) {
+export function filterGoods(goodsArray, operationStr) {
   let resultArray = [];
-  let parsed = parseQuery(str);
+  let parsed = parseQuery(operationStr);
   for (const elem of goodsArray) {
     let include = true;
     for (const predicate of parsed) {
@@ -31,10 +31,10 @@ export function filterGoods(goodsArray, str) {
   return resultArray;
 }
 
-function parseQuery(str) {
+function parseQuery(queryStr) {
   let stringMethods = ["contains", "starts", "ends"];
   let parsed = [];
-  let splitString = str.split("&").map((x) => x.split("-"));
+  let splitString = queryStr.split("&").map((x) => x.split("-"));
   for (const predicate of splitString) {
     let fieldName = predicate[0];
     let operator, parameter;
@@ -43,7 +43,6 @@ function parseQuery(str) {
       parameter = predicate[2];
     } else {
       let separate = predicate[1].match(/(\S+?)(\d+)/);
-      //todo проверка
       operator = separate[1];
       parameter = +separate[2];
     }
