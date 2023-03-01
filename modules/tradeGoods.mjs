@@ -34,7 +34,7 @@ export function filterGoods(goodsArray, operationStr) {
 function parseQuery(queryStr) {
   let stringMethods = ["contains", "starts", "ends"];
   let parsed = [];
-  let splitString = queryStr.split("&").map((x) => x.split("-"));
+  let splitString = queryStr.split("&").map(x => x.split("-"));
   for (const predicate of splitString) {
     let fieldName = predicate[0];
     let operator, parameter;

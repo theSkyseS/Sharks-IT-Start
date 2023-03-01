@@ -9,7 +9,7 @@ export function stripExtraSpaces(str) {
 export function countWords(str) {
   return stripExtraSpaces(str)
     .split(" ")
-    .filter((x) => x).length;
+    .filter(x => x).length;
 }
 
 export function countUniqueWords(str) {
