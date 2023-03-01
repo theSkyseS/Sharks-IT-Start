@@ -16,12 +16,12 @@ export function countUniqueWords(str) {
   let result = new Map();
   let stripped = stripExtraSpaces(str.toLowerCase());
 
-  for (const word of stripped.replace(/[.,!?:;]/g, "").split(" ")) {
-    let count = result.get(word);
-    if (count) count += 1;
-    else count = 1;
-    result.set(word, count);
-  }
+  return stripped
+    .replace(/[.,!?:;]/g, "")
+    .split(" ")
+    .reduce((result, word) => {
+      const count = result.get(word);
 
-  return result;
+      return result.set(word, count ? count + 1 : 1);
+    }, new Map());
 }
