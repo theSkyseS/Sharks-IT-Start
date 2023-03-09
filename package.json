@@ -1,0 +1,20 @@
+{
+  "name": "sharks-it-start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theSkyseS/Sharks-IT-Start.git"
+  },
+  "author": "theSkyseS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theSkyseS/Sharks-IT-Start/issues"
+  },
+  "homepage": "https://github.com/theSkyseS/Sharks-IT-Start#readme"
+}
