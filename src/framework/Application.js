@@ -44,6 +44,7 @@ module.exports = class Application {
 
         if (!emitted) {
           res.writeHead(404, "Not found");
+          res.end();
         }
       });
     });
