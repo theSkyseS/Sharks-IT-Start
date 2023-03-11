@@ -33,7 +33,7 @@ export const updateGenre = (name: string, id: string) => {
   return db.query(
     `UPDATE SIMPLE_FILM_DB.GENRES
     SET name = $1 
-    WHERE id = $2`,
+    WHERE id = $2 RETURNING *`,
     [name, id]
   );
 };
@@ -41,7 +41,7 @@ export const updateGenre = (name: string, id: string) => {
 export const deleteGenre = (id: string) => {
   return db.query(
     `DELETE FROM SIMPLE_FILM_DB.GENRES
-    WHERE id = $1`,
+    WHERE id = $1 RETURNING *`,
     [id]
   );
 };
