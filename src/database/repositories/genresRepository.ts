@@ -4,14 +4,14 @@ export const getGenres = () => {
   return db.query("SELECT * FROM SIMPLE_FILM_DB.GENRES", []);
 };
 
-export const getGenreById = (genreId: string) => {
+export const getGenreById = (genreId: number) => {
   return db.query(
     "SELECT * FROM SIMPLE_FILM_DB.GENRES GENRES WHERE GENRES.ID = $1",
     [genreId]
   );
 };
 
-export const getGenresByFilmId = (filmId: string) => {
+export const getGenresByFilmId = (filmId: number) => {
   return db.query(
     `SELECT id, name
     FROM SIMPLE_FILM_DB.GENRES GENRES
@@ -29,7 +29,7 @@ export const addNewGenre = (name: string) => {
   );
 };
 
-export const updateGenre = (name: string, id: string) => {
+export const updateGenre = (name: string, id: number) => {
   return db.query(
     `UPDATE SIMPLE_FILM_DB.GENRES
     SET name = $1 
@@ -38,7 +38,7 @@ export const updateGenre = (name: string, id: string) => {
   );
 };
 
-export const deleteGenre = (id: string) => {
+export const deleteGenre = (id: number) => {
   return db.query(
     `DELETE FROM SIMPLE_FILM_DB.GENRES
     WHERE id = $1 RETURNING *`,

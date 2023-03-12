@@ -15,12 +15,16 @@ export function getGenres(req: HttpRequest, res: HttpResponse) {
 
 export function getGenreById(req: HttpRequest, res: HttpResponse) {
   const genreId = req.params.get("id");
-  if (!genreId) {
-    res.send(400, "text/plain", "Parameter genreId cannot be empty");
+  if (!genreId || !isFinite(+genreId)) {
+    res.send(
+      400,
+      "text/plain",
+      "Parameter genreId cannot be empty and should be a number"
+    );
     return;
   }
   repository
-    .getGenreById(genreId)
+    .getGenreById(+genreId)
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows[0]));
     })
@@ -52,8 +56,12 @@ export function addNewGenre(req: HttpRequest, res: HttpResponse) {
 
 export function updateGenre(req: HttpRequest, res: HttpResponse) {
   const genreId = req.params.get("id");
-  if (!genreId) {
-    res.send(400, "text/plain", "Parameter genreId cannot be empty");
+  if (!genreId || !isFinite(+genreId)) {
+    res.send(
+      400,
+      "text/plain",
+      "Parameter genreId cannot be empty and should be a number"
+    );
     return;
   }
   if (!req.body) {
@@ -67,7 +75,7 @@ export function updateGenre(req: HttpRequest, res: HttpResponse) {
     return;
   }
   repository
-    .updateGenre(name, genreId)
+    .updateGenre(name, +genreId)
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows[0]));
     })
@@ -78,12 +86,16 @@ export function updateGenre(req: HttpRequest, res: HttpResponse) {
 
 export function deleteGenre(req: HttpRequest, res: HttpResponse) {
   const genreId = req.params.get("id");
-  if (!genreId) {
-    res.send(400, "text/plain", "Parameter genreId cannot be empty");
+  if (!genreId || !isFinite(+genreId)) {
+    res.send(
+      400,
+      "text/plain",
+      "Parameter genreId cannot be empty and should be a number"
+    );
     return;
   }
   repository
-    .deleteGenre(genreId)
+    .deleteGenre(+genreId)
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows));
     })
