@@ -14,6 +14,7 @@ genresRouter.get("/", (req: HttpRequest, res: HttpResponse) => {
   }
 });
 
+genresRouter.get("/films/", controller.getFilmsByGenreId);
 genresRouter.post("/", controller.addNewGenre);
 genresRouter.put("/", controller.updateGenre);
 genresRouter.delete("/", controller.deleteGenre);

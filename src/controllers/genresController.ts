@@ -1,9 +1,10 @@
-import repository = require("../database/repositories/genresRepository");
+import genresRepository = require("../database/repositories/genresRepository");
+import filmsRepository = require("../database/repositories/filmsRepository");
 import { HttpRequest } from "../framework/HttpRequest";
 import { HttpResponse } from "../framework/HttpResponse";
 
 export function getGenres(req: HttpRequest, res: HttpResponse) {
-  repository
+  genresRepository
     .getGenres()
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows));
@@ -19,7 +20,7 @@ export function getGenreById(req: HttpRequest, res: HttpResponse) {
     res.send(400, "text/plain", "Parameter id cannot be empty or NaN");
     return;
   }
-  repository
+  genresRepository
     .getGenreById(genreId)
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows[0]));
@@ -35,7 +36,7 @@ export function addNewGenre(req: HttpRequest, res: HttpResponse) {
     res.send(400, "text/plain", "Request body is invalid");
     return;
   }
-  repository
+  genresRepository
     .addNewGenre(requestBody.name)
     .then(genres => {
       res.send(201, "application/json", JSON.stringify(genres.rows[0]));
@@ -56,7 +57,7 @@ export function updateGenre(req: HttpRequest, res: HttpResponse) {
     res.send(400, "text/plain", "Request body is invalid");
     return;
   }
-  repository
+  genresRepository
     .updateGenre(requestBody.name, +genreId)
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows[0]));
@@ -72,10 +73,26 @@ export function deleteGenre(req: HttpRequest, res: HttpResponse) {
     res.send(400, "text/plain", "Parameter id cannot be empty or NaN");
     return;
   }
-  repository
-    .deleteGenre(+genreId)
+  genresRepository
+    .deleteGenre(genreId)
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows));
+    })
+    .catch(error => {
+      res.send(500, "text/plain", error.stack);
+    });
+}
+
+export function getFilmsByGenreId(req: HttpRequest, res: HttpResponse) {
+  const genreId = validateParameterId(req.params.get("id"));
+  if (!genreId) {
+    res.send(400, "text/plain", "Parameter id cannot be empty or Nan");
+    return;
+  }
+  filmsRepository
+    .getFilmsByGenreId(genreId)
+    .then(films => {
+      res.send(200, "application/json", JSON.stringify(films.rows));
     })
     .catch(error => {
       res.send(500, "text/plain", error.stack);
