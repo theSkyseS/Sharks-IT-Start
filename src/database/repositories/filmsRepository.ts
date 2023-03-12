@@ -6,7 +6,7 @@ export const getFilms = () => {
 
 export const getFilmById = (filmId: number) => {
   return db.query(
-    "SELECT * FROM SIMPLE_FILM_DB.GENRES GENRES WHERE GENRES.ID = $1",
+    "SELECT * FROM SIMPLE_FILM_DB.FILMS FILMS WHERE FILMS.ID = $1",
     [filmId]
   );
 };
