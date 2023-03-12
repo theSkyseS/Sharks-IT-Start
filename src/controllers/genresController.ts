@@ -14,17 +14,13 @@ export function getGenres(req: HttpRequest, res: HttpResponse) {
 }
 
 export function getGenreById(req: HttpRequest, res: HttpResponse) {
-  const genreId = req.params.get("id");
-  if (!genreId || !isFinite(+genreId)) {
-    res.send(
-      400,
-      "text/plain",
-      "Parameter genreId cannot be empty and should be a number"
-    );
+  const genreId = validateParameterId(req.params.get("id"));
+  if (!genreId) {
+    res.send(400, "text/plain", "Parameter id cannot be empty or NaN");
     return;
   }
   repository
-    .getGenreById(+genreId)
+    .getGenreById(genreId)
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows[0]));
     })
@@ -34,20 +30,15 @@ export function getGenreById(req: HttpRequest, res: HttpResponse) {
 }
 
 export function addNewGenre(req: HttpRequest, res: HttpResponse) {
-  if (!req.body) {
-    res.send(400, "text/plain", "Body cannot be empty");
-    return;
-  }
-  const requestBody = req.body as { name: string };
-  const name = requestBody.name;
-  if (!name) {
-    res.send(400, "text/plain", "Parameter name cannot be empty");
+  const requestBody = validateRequestBody(req.body);
+  if (!requestBody) {
+    res.send(400, "text/plain", "Request body is invalid");
     return;
   }
   repository
-    .addNewGenre(name)
+    .addNewGenre(requestBody.name)
     .then(genres => {
-      res.send(200, "application/json", JSON.stringify(genres.rows[0]));
+      res.send(201, "application/json", JSON.stringify(genres.rows[0]));
     })
     .catch(error => {
       res.send(500, "text/plain", error.stack);
@@ -55,27 +46,18 @@ export function addNewGenre(req: HttpRequest, res: HttpResponse) {
 }
 
 export function updateGenre(req: HttpRequest, res: HttpResponse) {
-  const genreId = req.params.get("id");
-  if (!genreId || !isFinite(+genreId)) {
-    res.send(
-      400,
-      "text/plain",
-      "Parameter genreId cannot be empty and should be a number"
-    );
+  const genreId = validateParameterId(req.params.get("id"));
+  if (!genreId) {
+    res.send(400, "text/plain", "Parameter id cannot be empty or NaN");
     return;
   }
-  if (!req.body) {
-    res.send(400, "text/plain", "Body cannot be empty");
-    return;
-  }
-  const requestBody = req.body as { name: string };
-  const name = requestBody.name;
-  if (!name) {
-    res.send(400, "text/plain", "Parameter name cannot be empty");
+  const requestBody = validateRequestBody(req.body);
+  if (!requestBody) {
+    res.send(400, "text/plain", "Request body is invalid");
     return;
   }
   repository
-    .updateGenre(name, +genreId)
+    .updateGenre(requestBody.name, +genreId)
     .then(genres => {
       res.send(200, "application/json", JSON.stringify(genres.rows[0]));
     })
@@ -85,13 +67,9 @@ export function updateGenre(req: HttpRequest, res: HttpResponse) {
 }
 
 export function deleteGenre(req: HttpRequest, res: HttpResponse) {
-  const genreId = req.params.get("id");
-  if (!genreId || !isFinite(+genreId)) {
-    res.send(
-      400,
-      "text/plain",
-      "Parameter genreId cannot be empty and should be a number"
-    );
+  const genreId = validateParameterId(req.params.get("id"));
+  if (!genreId) {
+    res.send(400, "text/plain", "Parameter id cannot be empty or NaN");
     return;
   }
   repository
@@ -102,4 +80,23 @@ export function deleteGenre(req: HttpRequest, res: HttpResponse) {
     .catch(error => {
       res.send(500, "text/plain", error.stack);
     });
+}
+
+function validateRequestBody(body: unknown): { name: string } | undefined {
+  if (!body) {
+    return;
+  }
+  const requestBody = body as { name: string };
+  const name = requestBody.name;
+  if (!name) {
+    return;
+  }
+  return requestBody;
+}
+
+function validateParameterId(id: unknown): number | undefined {
+  if (!id || !isFinite(+id)) {
+    return;
+  }
+  return +id;
 }
