@@ -45,3 +45,18 @@ export const deleteFilm = (id: number) => {
     [id]
   );
 };
+
+export const addGenreToFilm = (filmId: number, genreId: number) => {
+  return db.query(
+    `INSERT INTO SIMPLE_FILM_DB.FILM_GENRE
+    VALUES($1, $2) RETURNING *`,
+    [filmId, genreId]
+  );
+};
+export function removeGenreFromFilm(filmId: number, genreId: number) {
+  return db.query(
+    `DELETE FROM SIMPLE_FILM_DB.FILM_GENRE
+    WHERE FILM_ID = $1 AND GENRE_ID = $2`,
+    [filmId, genreId]
+  );
+}

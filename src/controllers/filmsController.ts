@@ -27,7 +27,7 @@ export function getFilmById(req: HttpRequest, res: HttpResponse) {
 }
 
 export function addNewFilm(req: HttpRequest, res: HttpResponse) {
-  const requestBody = validateRequestBody(req.body);
+  const requestBody = validateFilmRequestBody(req.body);
   if (!requestBody) {
     res.send(400, "text/plain", "Invalid body");
     return;
@@ -49,7 +49,7 @@ export function updateFilm(req: HttpRequest, res: HttpResponse) {
       res.send(400, "text/plain", "Parameter id cannot be empty or Nan");
       return;
     }
-    const requestBody = validateRequestBody(req.body);
+    const requestBody = validateFilmRequestBody(req.body);
     if (!requestBody) {
       res.send(400, "text/plain", "Invalid body");
       return;
@@ -97,7 +97,53 @@ export function getGenresByFilmId(req: HttpRequest, res: HttpResponse) {
     });
 }
 
-function validateRequestBody(
+export function addGenreToFilm(req: HttpRequest, res: HttpResponse) {
+  const filmId = validateParameterId(req.params.get("id"));
+  if (!filmId) {
+    res.send(400, "text/plain", "Parameter id cannot be empty or Nan");
+    return;
+  }
+  const requestBody = validateGenreRequestBody(req.body);
+  if (!requestBody) {
+    res.send(400, "text/plain", "Invalid body");
+    return;
+  }
+  filmsRepository
+    .addGenreToFilm(filmId, requestBody.genreId)
+    .then(() => {
+      res.send(
+        201,
+        "text/plain",
+        `Created link from film id:${filmId} to genre id:${requestBody.genreId}`
+      );
+    })
+    .catch(error => {
+      res.send(500, "text/plain", error.stack);
+    });
+}
+
+export function removeGenreFromFilm(req: HttpRequest, res: HttpResponse) {
+  const filmId = validateParameterId(req.params.get("id"));
+  const genreId = validateParameterId(req.params.get("genreId"));
+  if (!filmId || !genreId) {
+    res.send(400, "text/plain", "Parameter id cannot be empty or Nan");
+    return;
+  }
+  filmsRepository
+    .removeGenreFromFilm(filmId, genreId)
+    .then(() => {
+      res.send(
+        200,
+        "text/plain",
+        `Removed link from film id:${filmId} to genre id:${genreId}`
+      );
+    })
+    .catch(error => {
+      res.send(500, "text/plain", error.stack);
+    });
+}
+
+function validateFilmRequestBody(
   body: unknown
 ): { name: string; year: number } | undefined {
   if (!body) {
@@ -106,9 +152,17 @@ function validateRequestBody(
   const requestBody = body as { name: string; year: number };
   const name = requestBody.name;
   const year = requestBody.year;
-  if (!name || !year || !isFinite(year)) {
+  if (!name || !year || !isFinite(year)) return;
+  return requestBody;
+}
+
+function validateGenreRequestBody(body: unknown) {
+  if (!body) {
     return;
   }
+  const requestBody = body as { genreId: number };
+  const genreId = requestBody.genreId;
+  if (!genreId || !isFinite(genreId)) return;
   return requestBody;
 }
 

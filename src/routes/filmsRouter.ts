@@ -14,7 +14,10 @@ filmsRouter.get("/", (req: HttpRequest, res: HttpResponse) => {
   }
 });
 
-filmsRouter.get("/genres/", controller.getGenresByFilmId);
 filmsRouter.post("/", controller.addNewFilm);
 filmsRouter.put("/", controller.updateFilm);
 filmsRouter.delete("/", controller.deleteFilm);
+
+filmsRouter.get("/genres/", controller.getGenresByFilmId);
+filmsRouter.post("/genres/", controller.addGenreToFilm);
+filmsRouter.delete("/genres/", controller.removeGenreFromFilm);
