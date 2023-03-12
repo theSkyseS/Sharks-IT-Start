@@ -1,4 +1,4 @@
-import * as db from "..";
+import db = require("..");
 
 export const getGenres = () => {
   return db.query("SELECT * FROM SIMPLE_FILM_DB.GENRES", []);

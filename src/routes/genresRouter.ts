@@ -1,7 +1,7 @@
 import { Router } from "../framework/Router";
 import { HttpRequest } from "../framework/HttpRequest";
 import { HttpResponse } from "../framework/HttpResponse";
-import * as controller from "../controllers/genresController";
+import controller = require("../controllers/genresController");
 
 export const genresRouter = new Router();
 genresRouter.pathBase = "/genres";
