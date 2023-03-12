@@ -1,0 +1,35 @@
+{
+  "name": "sharks-it-start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theSkyseS/Sharks-IT-Start.git"
+  },
+  "author": "theSkyseS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theSkyseS/Sharks-IT-Start/issues"
+  },
+  "homepage": "https://github.com/theSkyseS/Sharks-IT-Start#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "pg": "^8.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.0",
+    "@types/pg": "^8.6.6",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "eslint": "^8.35.0",
+    "nodemon": "^2.0.21",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}
