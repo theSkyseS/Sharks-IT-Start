@@ -31,7 +31,7 @@ export function filterGoods(goodsArray, operationStr) {
   return resultArray;
 }
 
-function parseQuery(queryStr) {
+export function parseQuery(queryStr) {
   let stringMethods = ["contains", "starts", "ends"];
   let parsed = [];
   let splitString = queryStr.split("&").map(x => x.split("-"));
